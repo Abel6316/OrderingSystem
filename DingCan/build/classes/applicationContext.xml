@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:context="http://www.springframework.org/schema/context"
+xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+xmlns:tx="http://www.springframework.org/schema/tx"
+xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+xmlns:aop="http://www.springframework.org/schema/aop"
+xmlns:jee="http://www.springframework.org/schema/jee"
+xsi:schemaLocation="http://www.springframework.org/schema/jdbc
+http://www.springframework.org/schema/jdbc/spring-jdbc-3.1.xsd
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+http://www.springframework.org/schema/data/jpa
+http://www.springframework.org/schema/data/jpa/spring-jpa-1.0.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-3.1.xsd
+http://www.springframework.org/schema/jee      
+http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+http://www.springframework.org/schema/aop
+http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
+
+  <jee:jndi-lookup id="dataSource01" jndi-name="java:comp/env/cityoa"></jee:jndi-lookup>
+
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean" >
+     <property name="jndiName">
+        <value>java:comp/env/cityoa</value>
+     </property>
+	</bean>
+	
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		
+		<property name="mappingDirectoryLocations">
+		   <list>
+		     <value>classpath:/com/city/oa/value/</value>
+		   </list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+			<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+			<prop key="hibernate.max_fetch_depth">3</prop>
+			<prop key="hibernate.jdbc.fetch_size">50</prop>
+			<prop key="hibernate.jdbc.batch_size">10</prop>
+			<prop key="hibernate.show_sql">true</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<!-- 事务处理Advice -->
+	<tx:advice id="txAdvice">
+		<tx:attributes>
+			<tx:method name="get*" read-only="true" rollback-for="Exception"/>
+			<tx:method name="getList*" propagation="NEVER"/>
+			<tx:method name="*" rollback-for="Exception"/>
+		</tx:attributes>
+	</tx:advice>
+	<!-- Adivce声明 -->
+	<bean id="businessMethodBeforeAdvice" class="com.city.oa.advice.BusinessMethodBeforeAdvice"></bean>
+	<bean id="businessMethodAfterReturningAdvice" class="com.city.oa.advice.BusinessMethodAfterReturningAdvice"></bean>
+	<bean id="businessExceptionAdvice" class="com.city.oa.advice.BusinessMethodExceptionAdvice"></bean>
+	<bean id="businessAroundAdvice" class="com.city.oa.advice.BusinessMethodAroundAdvice"></bean>
+	
+	
+	<bean id="departmentBusiness" class="com.city.oa.business.impl.DepartmentBusinessImpl">
+	   <property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="homeMainAction" class="com.city.oa.action.HomeMainAction" scope="prototype">
+	
+	</bean>
+	
+	<bean id="departmentMainAction" class="com.city.oa.action.DepartmentMainAction" scope="prototype">
+	
+	</bean>
+	
+	<bean id="departmentProcessAction" class="com.city.oa.action.DepartmentProcessAction" scope="prototype">
+	    <property name="departmentBusiness" ref="departmentBusiness"></property>
+	</bean>
+	
+	
+	<bean id="behaveMainAction" class="com.city.oa.action.BehaveMainAction" scope="prototype">
+	
+	</bean>
+	
+	<bean id="employeeMainAction" class="com.city.oa.action.EmployeeMainAction" scope="prototype">
+	
+	</bean>
+	
+	
+	
+	
+	
+	<aop:config>
+	    <aop:pointcut expression="execution(* com.city.oa.business.impl.*.add(..))" id="businessMethodPointcut"/>
+	    <aop:pointcut expression="execution(* com.city.oa.business.impl.*.*(..))" id="businessDeleteMethodPointcut"/>
+	    <aop:advisor advice-ref="businessMethodBeforeAdvice" pointcut-ref="businessMethodPointcut" />
+	    <aop:advisor advice-ref="businessMethodAfterReturningAdvice" pointcut-ref="businessMethodPointcut" />
+	    <aop:advisor advice-ref="businessExceptionAdvice" pointcut-ref="businessMethodPointcut" />
+	    <aop:advisor advice-ref="businessAroundAdvice" pointcut-ref="businessDeleteMethodPointcut" />
+	    
+	</aop:config>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+</beans>

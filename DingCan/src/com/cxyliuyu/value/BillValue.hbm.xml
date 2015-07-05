@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.cxyliuyu.value">
+    <class name="BillValue" table="OA_BILL">
+        <id name="billId" column="BILLID">
+           <generator class="native" />
+        </id>
+        <property name="billUserId" column="BILLUSERID"/>
+        <property name="billPrice" column="BILLPRICE"/>
+        
+      
+    </class>
+</hibernate-mapping>

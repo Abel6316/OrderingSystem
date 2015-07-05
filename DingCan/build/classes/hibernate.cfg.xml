@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD//EN"
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+
+<hibernate-configuration>
+
+  <session-factory>
+	<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+	<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/dingcanssh</property>
+	<property name="hibernate.connection.username">root</property>
+	<property name="hibernate.connection.password">199232124</property>
+	<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+	
+	<property name="hbm2ddl.auto">update</property>
+	<property name="javax.persistence.validation.mode">none</property>
+	<property name="hibernate.show_sql">true</property>
+	
+	<mapping resource="com/cxyliuyu/value/BillValue.hbm.xml"/>
+	<mapping resource="com/cxyliuyu/value/FoodValue.hbm.xml"/>
+	<mapping resource="com/cxyliuyu/value/OrderValue.hbm.xml"/>
+	<mapping resource="com/cxyliuyu/value/UserValue.hbm.xml"/>
+	<mapping resource="com/cxyliuyu/value/WaterValue.hbm.xml"/>
+ </session-factory>
+</hibernate-configuration>
+
+

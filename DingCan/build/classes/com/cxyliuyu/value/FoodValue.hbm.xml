@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.cxyliuyu.value">
+    <class name="FoodValue" table="OA_FOOD">
+        <id name="foodId" column="BILLiD">
+           <generator class="native" />
+        </id>
+        <property name="foodName" column="FOODNAME"/>
+        <property name="foodPrice" column="FOODPRICE"/>
+        <property name="foodDetails" column="FOODDETAILS"/>
+        <many-to-one name="orderId" class="OrderValue" cascade="save-update" fetch="select" column="orderId"></many-to-one>
+        
+      
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.cxyliuyu.value">
+    <class name="OrderValue" table="OA_ORDER">
+        <id name="orderId" column="ORDERID">
+           <generator class="native" />
+        </id>
+		<many-to-one name="userId" class="UserValue" cascade="save-update" fetch="select" column="userId"></many-to-one>
+        <property name="orderTime" column="ORDERTIME"/>
+        <property name="status" column="STATUS"/>
+        <set name="foods" cascade="sava-update" table="OA_FOOD" inverse="true">
+        	<key column="foodId" not-null="false"></key>
+        	<one-to-many class="FoodValue"/>
+        </set>
+        <set name="waters" cascade="sava-update" table="OA_WATER" inverse="true">
+        	<key column="waterId" not-null="false"></key>
+        	<one-to-many class="WaterValue"/>
+        </set>
+        
+      
+    </class>
+</hibernate-mapping>

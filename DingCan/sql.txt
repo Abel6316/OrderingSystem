@@ -1,0 +1,80 @@
+drop table if exists OA_BILL
+
+    drop table if exists OA_FOOD
+
+    drop table if exists OA_ORDER
+
+    drop table if exists OA_USER
+
+    drop table if exists OA_WATER
+
+    create table OA_BILL (
+        BILLID integer not null auto_increment,
+        BILLUSERID integer,
+        BILLPRICE double precision,
+        primary key (BILLID)
+    )
+
+    create table OA_FOOD (
+        BILLiD integer not null auto_increment,
+        FOODNAME varchar(255),
+        FOODPRICE varchar(255),
+        FOODDETAILS varchar(255),
+        orderId integer,
+        foodId integer,
+        primary key (BILLiD)
+    )
+
+    create table OA_ORDER (
+        ORDERID integer not null auto_increment,
+        userId integer,
+        ORDERTIME datetime,
+        STATUS varchar(255),
+        primary key (ORDERID)
+    )
+
+    create table OA_USER (
+        USERID integer not null auto_increment,
+        USERNAME varchar(255),
+        PASSWORD varchar(255),
+        PERMISSION varchar(255),
+        primary key (USERID)
+    )
+
+    create table OA_WATER (
+        WATERID integer not null auto_increment,
+        WATERNAME varchar(255),
+        WATERPRICE double precision,
+        orderId integer,
+        primary key (WATERID)
+    )
+
+    alter table OA_FOOD 
+        add index FK_9w073spy8hf4nt60u4jtbaxrw (orderId), 
+        add constraint FK_9w073spy8hf4nt60u4jtbaxrw 
+        foreign key (orderId) 
+        references OA_ORDER (ORDERID)
+
+    alter table OA_FOOD 
+        add index FK_i0clmm16thssts98mkseqsdkc (foodId), 
+        add constraint FK_i0clmm16thssts98mkseqsdkc 
+        foreign key (foodId) 
+        references OA_ORDER (ORDERID)
+
+    alter table OA_ORDER 
+        add index FK_tiy9dclh6552o9h8os94s5k0t (userId), 
+        add constraint FK_tiy9dclh6552o9h8os94s5k0t 
+        foreign key (userId) 
+        references OA_USER (USERID)
+
+    alter table OA_WATER 
+        add index FK_mevdg1lxeppmt1mhk504yactd (orderId), 
+        add constraint FK_mevdg1lxeppmt1mhk504yactd 
+        foreign key (orderId) 
+        references OA_ORDER (ORDERID)
+
+    alter table OA_WATER 
+        add index FK_bvwnf8pniag01ybxqrvhebkox (waterId), 
+        add constraint FK_bvwnf8pniag01ybxqrvhebkox 
+        foreign key (waterId) 
+        references OA_ORDER (ORDERID)

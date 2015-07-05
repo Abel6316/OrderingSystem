@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.cxyliuyu.value">
+    <class name="WaterValue" table="OA_WATER">
+        <id name="waterId" column="WATERID">
+           <generator class="native" />
+        </id>
+        <property name="waterName" column="WATERNAME"/>
+        <property name="waterPrice" column="WATERPRICE"/>
+        <many-to-one name="orderId" class="OrderValue" cascade="save-update" fetch="select" column="orderId"></many-to-one>
+      
+    </class>
+</hibernate-mapping>
